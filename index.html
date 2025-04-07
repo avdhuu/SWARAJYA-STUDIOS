@@ -1,243 +1,110 @@
+from zipfile import ZipFile
+import os
+
+# Directory to store website files
+website_dir = "/mnt/data/swarajya_studios_website"
+os.makedirs(website_dir, exist_ok=True)
+
+# Sample HTML content for the website (as placeholder, can be replaced with full site)
+html_content = """
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Swarajya Studios</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-      background: #f9f9f9;
-      color: #222;
-    }
-
-    header {
-      background: linear-gradient(to right, #000428, #004e92);
-      color: #fff;
-      padding: 1.5rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    header h1 {
-      font-size: 2rem;
-      color: #ffc107;
-    }
-
-    nav a {
-      color: #fff;
-      margin-left: 1.5rem;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-
-    nav a:hover {
-      color: #ffc107;
-    }
-
-    .hero {
-      height: 90vh;
-      background: url('https://images.unsplash.com/photo-1545239351-ef35f43d514b') center/cover no-repeat;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: #fff;
-    }
-
-    .hero h2 {
-      font-size: 3.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .hero p {
-      font-size: 1.2rem;
-      max-width: 600px;
-    }
-
-    .section {
-      padding: 5rem 2rem;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .section h3 {
-      font-size: 2.5rem;
-      margin-bottom: 2rem;
-      text-align: center;
-    }
-
-    .about p, .vision p {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      text-align: center;
-    }
-
-    .services {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      gap: 2rem;
-    }
-
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      width: 280px;
-      text-align: center;
-      transition: transform 0.3s;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .card h4 {
-      font-size: 1.4rem;
-      margin-bottom: 1rem;
-    }
-
-    .card p {
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-
-    .gallery img {
-      width: 100%;
-      border-radius: 10px;
-    }
-
-    .contact-form {
-      max-width: 600px;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .contact-form input,
-    .contact-form textarea {
-      padding: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 1rem;
-    }
-
-    .btn {
-      background: #ffc107;
-      color: #000;
-      padding: 1rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .btn:hover {
-      background: #e0a800;
-    }
-
-    footer {
-      background: #000428;
-      color: #fff;
-      padding: 2rem;
-      text-align: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swarajya Studios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fdfcfb;
+        }
+        header {
+            background-color: #0a0a23;
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin: 0;
+        }
+        .tagline {
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+        section {
+            padding: 2rem;
+        }
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 280px;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        footer {
+            background-color: #0a0a23;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+    </style>
 </head>
-
 <body>
-  <header>
-    <h1>Swarajya Studios</h1>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <h2>Building Brands, Designing Dreams</h2>
-    <p>At Swarajya Studios, we combine creativity with strategy to empower your vision into reality.</p>
-  </section>
-
-  <section class="section about" id="about">
-    <h3>About Us</h3>
-    <p>Swarajya Studios is your one-stop solution for all things creative — from banners and thumbnails to professional branding and content creation. We believe in pushing boundaries and crafting designs that tell your story powerfully and beautifully.</p>
-  </section>
-
-  <section class="section vision">
-    <h3>Our Vision</h3>
-    <p>Inspired by the valor and vision of Shivaji Maharaj, we aim to establish a Swarajya in the world of creativity — where each design is fearless, royal, and impactful.</p>
-  </section>
-
-  <section class="section" id="services">
-    <h3>What We Do</h3>
-    <div class="services">
-      <div class="card">
-        <h4>Graphic Design</h4>
-        <p>Custom posters, thumbnails, banners, and social media content that grabs attention.</p>
-      </div>
-      <div class="card">
-        <h4>Logo & Branding</h4>
-        <p>Stand out with personalized logos, branding kits, and identity development.</p>
-      </div>
-      <div class="card">
-        <h4>Calendars & Custom Work</h4>
-        <p>Unique calendars and traditional themes designed with precision and love.</p>
-      </div>
-      <div class="card">
-        <h4>Video Editing</h4>
-        <p>Crisp, professional, and tailored video edits for reels, trailers, and storytelling.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="gallery">
-    <h3>Our Work</h3>
-    <div class="gallery">
-      <img src="https://source.unsplash.com/featured/?design" alt="Design Work">
-      <img src="https://source.unsplash.com/featured/?branding" alt="Branding">
-      <img src="https://source.unsplash.com/featured/?poster" alt="Poster Design">
-      <img src="https://source.unsplash.com/featured/?video-editing" alt="Video Edit">
-    </div>
-  </section>
-
-  <section class="section" id="contact">
-    <h3>Get In Touch</h3>
-    <form class="contact-form">
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea rows="5" placeholder="Your Message"></textarea>
-      <button type="submit" class="btn">Send Message</button>
-    </form>
-  </section>
-
-  <footer>
-    <p>&copy; 2025 Swarajya Studios | Built with Passion & Pride 🇮🇳</p>
-  </footer>
+    <header>
+        <h1>Swarajya Studios</h1>
+        <p class="tagline">Designs That Speak | Inspired by Shivaji Maharaj</p>
+    </header>
+    <section>
+        <h2>Our Services</h2>
+        <div class="services">
+            <div class="card">
+                <h3>Graphic Design</h3>
+                <p>Posters, Logos, Banners, Thumbnails & more</p>
+            </div>
+            <div class="card">
+                <h3>Branding</h3>
+                <p>Complete Business Identity from scratch</p>
+            </div>
+            <div class="card">
+                <h3>Video Editing</h3>
+                <p>Professional cuts and transitions</p>
+            </div>
+        </div>
+    </section>
+    <footer>
+        &copy; 2025 Swarajya Studios | All Rights Reserved
+    </footer>
 </body>
-
 </html>
+"""
+
+# Save HTML file
+html_path = os.path.join(website_dir, "index.html")
+with open(html_path, "w") as f:
+    f.write(html_content)
+
+# Create ZIP file
+zip_path = "/mnt/data/SwarajyaStudios_Website.zip"
+with ZipFile(zip_path, 'w') as zipf:
+    for root, dirs, files in os.walk(website_dir):
+        for file in files:
+            full_path = os.path.join(root, file)
+            arcname = os.path.relpath(full_path, website_dir)
+            zipf.write(full_path, arcname)
+
+zip_path
